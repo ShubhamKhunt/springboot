@@ -173,7 +173,7 @@ public class UserServiceImpl implements UserService {
             throw new NoDataFoundException("Invalid Request");
         }
 
-        Sort sort = Sort.by((sortDir.equals("DESC") ? Sort.Direction.DESC : Sort.Direction.ASC), sortBy);
+        Sort sort = Sort.by((sortDir.toUpperCase().equals("DESC") ? Sort.Direction.DESC : Sort.Direction.ASC), sortBy);
         Pageable page = PageRequest.of(pageNo, 10, sort);
 
         List<User> users = userRepository.getUsersByTenant(tenant.get(), page).get();
