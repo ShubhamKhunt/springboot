@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  server:
+    build: .
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - oh-mysql
+    depends_on:
+      - mysqldb
+  mysqldb:
+    image: mysql:5.7
+    restart: always
+    networks:
+      - oh-mysql
+    environment:
+      - MYSQL_DATABASE:oh
+      - MYSQL_USER:root
+      - MYSQL_PASSWORD:Root@123
+      - MYSQL_ROOT_PASSWORD:Root@123
+    ports:
+      - 3306:3306
+
+networks:
+  oh-mysql:
