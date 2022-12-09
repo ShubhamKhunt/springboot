@@ -1,11 +1,13 @@
 package basic.springboot.simple.service.impl;
 
 import basic.springboot.simple.entity.Address;
+import basic.springboot.simple.entity.Contact;
 import basic.springboot.simple.entity.User;
 import basic.springboot.simple.exception.InternalServerException;
 import basic.springboot.simple.exception.NoDataFoundException;
 import basic.springboot.simple.model.DTO.AddressDTO;
 import basic.springboot.simple.repository.AddressRepository;
+import basic.springboot.simple.repository.ContactRepository;
 import basic.springboot.simple.repository.UserRepository;
 import basic.springboot.simple.service.AddressService;
 import basic.springboot.simple.service.BaseService;
@@ -33,6 +35,9 @@ public class AddressServiceImpl implements AddressService {
     private UserRepository userRepository;
 
     @Autowired
+    private ContactRepository contactRepository;
+
+    @Autowired
     private BaseService baseService;
 
     @Autowired
@@ -50,13 +55,20 @@ public class AddressServiceImpl implements AddressService {
                 throw new NoDataFoundException("User not found");
             }
 
-            address = modelMapper.map(addressDTO, Address.class);
+            Optional<Contact> contact = contactRepository.findById(Integer.valueOf(addressDTO.getContactId()));
 
-            address.setUser(currentUser);
-            address.setCreated(new Date());
-            address.setModified(new Date());
+            if(!contact.isPresent()){
+                throw new NoDataFoundException("Contact not found");
+            }
 
-            addressRepository.save(address);
+            Address tmpAddress = modelMapper.map(addressDTO, Address.class);
+
+            tmpAddress.setContact(contact.get());
+            tmpAddress.setUser(currentUser);
+            tmpAddress.setCreated(new Date());
+            tmpAddress.setModified(new Date());
+
+            address = addressRepository.save(tmpAddress);
         } catch (Exception e){
             throw new InternalServerException("Something went wrong while saving object!");
         }

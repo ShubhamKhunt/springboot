@@ -14,6 +14,11 @@ import javax.validation.constraints.NotEmpty;
 
 @Data
 public class AddressDTO {
+
+    @NotEmpty
+    @JsonProperty("contact_id")
+    private String contactId;
+
     @NotEmpty
     @JsonProperty("address")
     private String address;

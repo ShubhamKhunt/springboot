@@ -47,8 +47,13 @@ public class Address {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "created_by", referencedColumnName = "id")
     private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @JoinColumn(name="contact_id", referencedColumnName = "id")
+    private Contact contact;
 
     @Column(name="created")
     private Date created;
