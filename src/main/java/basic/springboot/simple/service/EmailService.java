@@ -6,4 +6,6 @@ import org.json.JSONObject;
 
 public interface EmailService {
     public boolean sendMail(User user, JSONObject data, EmailServiceImpl.EventType action);
+
+    public boolean sendMail(JSONObject identity, JSONObject data, EmailServiceImpl.EventType action);
 }
